@@ -13,15 +13,24 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { CalendarPlus2 } from "lucide-react";
+import { CalendarPlus2, PencilLine } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { DatePicker } from "./calendarPicker";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useAddTaskState } from "@/zustand/addTask";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { toast } from "sonner";
+import { Task } from "../../types/task";
 
-export const AddTask: React.FC = () => {
+export interface IAddOrUpdateTaskProps {
+  mode: "add" | "update";
+  task?: Task;
+}
+
+export const AddOrUpdateTask: React.FC<IAddOrUpdateTaskProps> = ({
+  mode,
+  task,
+}) => {
   const {
     detail,
     dueDate,
@@ -37,15 +46,12 @@ export const AddTask: React.FC = () => {
   } = useAddTaskState();
 
   const addTask = useCallback(async () => {
-    console.log("add task to the list");
     try {
       const result = await axiosInstance.post("/task", {
         title,
         detail,
         dueDate: dueDate.toISOString(),
       });
-
-      console.log(result);
       reset();
       toast.success("Task added successfully");
     } catch (error) {
@@ -54,18 +60,48 @@ export const AddTask: React.FC = () => {
     }
   }, [title, detail, dueDate, order, type]);
 
+  const updateTask = useCallback(async () => {
+    try {
+      const result = await axiosInstance.put(`/task/${order}`, {
+        title,
+        detail,
+        dueDate: dueDate.toISOString(),
+      });
+      console.log(result);
+      reset();
+      toast.success("Task updated successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Error updating task");
+    }
+  }, [title, detail, dueDate, order, type]);
+
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button>
-          <CalendarPlus2 className="mr-3" />
-          <p>Add Task</p>
-        </Button>
+        {mode === "add" ? (
+          <Button>
+            <CalendarPlus2 className="mr-3" />
+            <p>Add Task</p>
+          </Button>
+        ) : (
+          <Button className="h-5 w-5 p-[4px]">
+            <PencilLine className="text-sm " />
+          </Button>
+        )}
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Add new task</SheetTitle>
-          <SheetDescription>Add new task to your list</SheetDescription>
+          {mode === "add" ? (
+            <SheetTitle>Add new task</SheetTitle>
+          ) : (
+            <SheetTitle>Update task</SheetTitle>
+          )}
+          {mode === "add" ? (
+            <SheetDescription>Add new task to your list</SheetDescription>
+          ) : (
+            <SheetDescription>Update task details</SheetDescription>
+          )}
         </SheetHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
@@ -108,7 +144,11 @@ export const AddTask: React.FC = () => {
         </div>
         <SheetFooter>
           <SheetClose asChild>
-            <Button onClick={addTask}>Save changes</Button>
+            {mode === "add" ? (
+              <Button onClick={addTask}>Add task</Button>
+            ) : (
+              <Button onClick={updateTask}>Update Task</Button>
+            )}
           </SheetClose>
         </SheetFooter>
       </SheetContent>

@@ -37,3 +37,14 @@ taskRouter.get("/", async (req: Request, res: Response) => {
     res.status(500).send(error);
   }
 });
+
+taskRouter.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    await firestore.collection("tasks").doc(id).delete();
+    res.json({ id });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).send(error);
+  }
+});

@@ -4,13 +4,13 @@ interface IAddTaskState {
   title: string;
   detail: string;
   dueDate: Date;
-  type: string;
-  order: number;
+  type?: string;
+  order?: number;
   setTitle: (title: string) => void;
   setDescription: (description: string) => void;
   setDueDate: (dueDate: Date) => void;
-  setType: (type: string) => void;
-  setOrder: (order: number) => void;
+  setType: (type?: string) => void;
+  setOrder: (order?: number) => void;
   reset: () => void;
 }
 

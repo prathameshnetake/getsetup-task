@@ -1,6 +1,6 @@
 "use client";
 
-import { AddTask } from "@/components/addTask";
+import { AddOrUpdateTask } from "@/components/addOrUpdateTask";
 import { Tasks } from "@/components/tasks";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { useTasksState } from "@/zustand/tasks";
@@ -25,7 +25,7 @@ export default function Home() {
     <div className="p-4 w-full">
       <div className="mt-2 flex justify-between w-full">
         <p className="text-3xl font-bold">Task Wall</p>
-        <AddTask />
+        <AddOrUpdateTask mode="add" />
       </div>
 
       <Tasks />
