@@ -14,4 +14,5 @@ export const taskPayloadSchema = z.object({
 export const taskSchema = taskPayloadSchema.extend({
   id: z.string(),
   userId: z.string(),
+  color: z.string(),
 });
