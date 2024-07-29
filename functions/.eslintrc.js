@@ -21,13 +21,10 @@ module.exports = {
     "/lib/**/*", // Ignore built files.
     "/generated/**/*", // Ignore generated files.
   ],
-  plugins: [
-    "@typescript-eslint",
-    "import",
-  ],
+  plugins: ["@typescript-eslint", "import"],
   rules: {
-    "quotes": ["error", "double"],
+    "quotes": ["warn", "double"],
     "import/no-unresolved": 0,
-    "indent": ["error", 2],
+    "indent": ["warn", 2],
   },
 };

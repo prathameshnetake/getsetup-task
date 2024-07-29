@@ -50,13 +50,13 @@ export const Sidebar: React.FC<{}> = () => {
       <div className="mt-8">
         <div className="text-xs font-bold">TASK</div>
         {taskTypes.map((item) => (
-          <SidePanelItem {...item} />
+          <SidePanelItem {...item} key={item.text} />
         ))}
       </div>
       <div className="mt-8">
         <div className="text-xs font-bold">LISTS</div>
         {lists.map((item) => (
-          <SidePanelItem {...item} />
+          <SidePanelItem {...item} key={item.text} />
         ))}
       </div>
       <div>

@@ -1,5 +1,5 @@
 import * as firebase from "firebase-admin";
-import { NextFunction, Request, Response } from "express";
+import {NextFunction, Request, Response} from "express";
 
 const getAuthToken = (req: Request, res: Response, next: NextFunction) => {
   if (
@@ -20,14 +20,14 @@ export const checkIfAuthenticated = (
 ) => {
   getAuthToken(req, res, async () => {
     try {
-      const { authToken } = req;
+      const {authToken} = req;
       const userInfo = await firebase.auth().verifyIdToken(authToken || "");
       req.uid = userInfo.uid;
       return next();
     } catch (e) {
       return res
         .status(401)
-        .send({ error: "You are not authorized to make this request" });
+        .send({error: "You are not authorized to make this request"});
     }
   });
 };

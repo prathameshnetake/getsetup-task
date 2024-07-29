@@ -1,10 +1,10 @@
-import { Router, type Request, type Response } from "express";
-import { Task } from "types/task";
+import {Router, type Request, type Response} from "express";
+import {Task} from "types/task";
 import * as logger from "firebase-functions/logger";
-import { Firestore } from "@google-cloud/firestore";
-import { taskPayloadSchema } from "../../../types/zodSchemas/task";
-import { generateExtraLightColor } from "../../utils/color";
-import { checkIfAuthenticated } from "../middleware/auth";
+import {Firestore} from "@google-cloud/firestore";
+import {taskPayloadSchema} from "../../../types/zodSchemas/task";
+import {generateExtraLightColor} from "../../utils/color";
+import {checkIfAuthenticated} from "../middleware/auth";
 
 export const taskRouter = Router();
 const firestore = new Firestore();
@@ -21,7 +21,7 @@ taskRouter.post("/", async (req: Request<Task>, res: Response) => {
     logger.info(task);
     await firestore
       .collection("tasks")
-      .add({ ...task, color: colorCode, userId: req.uid });
+      .add({...task, color: colorCode, userId: req.uid});
     res.json(task);
   } catch (error) {
     logger.error(error);
@@ -37,7 +37,7 @@ taskRouter.get("/", async (req: Request, res: Response) => {
       .get();
     const tasks = snapshot.docs.map((doc) => {
       const task = doc.data() as Task;
-      return { ...task, id: doc.id } as Task;
+      return {...task, id: doc.id} as Task;
     });
     res.json(tasks);
   } catch (error) {
@@ -50,7 +50,7 @@ taskRouter.delete("/:id", async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
     await firestore.collection("tasks").doc(id).delete();
-    res.json({ id });
+    res.json({id});
   } catch (error) {
     logger.error(error);
     res.status(500).send(error);
