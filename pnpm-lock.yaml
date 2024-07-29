@@ -135,9 +135,6 @@ importers:
       nanoid:
         specifier: ^5.0.7
         version: 5.0.7
-      types:
-        specifier: workspace:*
-        version: link:../types
     devDependencies:
       '@types/chroma-js':
         specifier: ^2.4.4
@@ -172,6 +169,9 @@ importers:
       ts-loader:
         specifier: ^9.5.1
         version: 9.5.1(typescript@4.9.5)(webpack@5.93.0)
+      types:
+        specifier: workspace:*
+        version: link:../types
       typescript:
         specifier: ^4.9.0
         version: 4.9.5

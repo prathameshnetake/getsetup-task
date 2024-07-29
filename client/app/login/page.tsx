@@ -13,7 +13,6 @@ export default function Login() {
   const { user } = useUserState();
 
   useLayoutEffect(() => {
-    console.log("login", user);
     if (user) {
       redirect("/tasks");
     }

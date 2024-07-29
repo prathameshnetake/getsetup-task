@@ -27,11 +27,11 @@ export default function RootLayout({
         setUser(user);
         user.getIdToken().then((token) => {
           setToken(token);
-
           setAuthLoading(false);
         });
       } else {
         setUser(undefined);
+        setAuthLoading(false);
         setToken("");
       }
     });

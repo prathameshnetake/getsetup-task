@@ -21,8 +21,7 @@
     "express": "^4.19.2",
     "firebase-admin": "^12.1.0",
     "firebase-functions": "^5.0.0",
-    "nanoid": "^5.0.7",
-    "types": "workspace:*"
+    "nanoid": "^5.0.7"
   },
   "devDependencies": {
     "@types/chroma-js": "^2.4.4",
