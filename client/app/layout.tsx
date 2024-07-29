@@ -18,16 +18,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { setAuthLoading, user, setUser } = useUserState();
+  const { setAuthLoading, user, setUser, setToken } = useUserState();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       console.log(user);
-      setAuthLoading(false);
       if (user) {
         setUser(user);
+        user.getIdToken().then((token) => {
+          setToken(token);
+
+          setAuthLoading(false);
+        });
       } else {
         setUser(undefined);
+        setToken("");
       }
     });
 

@@ -4,9 +4,12 @@ import * as logger from "firebase-functions/logger";
 import { Firestore } from "@google-cloud/firestore";
 import { taskPayloadSchema } from "../../../types/zodSchemas/task";
 import { generateExtraLightColor } from "../../utils/color";
+import { checkIfAuthenticated } from "../middleware/auth";
 
 export const taskRouter = Router();
 const firestore = new Firestore();
+
+taskRouter.use(checkIfAuthenticated);
 
 taskRouter.post("/", async (req: Request<Task>, res: Response) => {
   try {
@@ -16,7 +19,9 @@ taskRouter.post("/", async (req: Request<Task>, res: Response) => {
     taskPayloadSchema.parse(task);
     const colorCode = generateExtraLightColor();
     logger.info(task);
-    await firestore.collection("tasks").add({ ...task, color: colorCode });
+    await firestore
+      .collection("tasks")
+      .add({ ...task, color: colorCode, userId: req.uid });
     res.json(task);
   } catch (error) {
     logger.error(error);
@@ -26,7 +31,10 @@ taskRouter.post("/", async (req: Request<Task>, res: Response) => {
 
 taskRouter.get("/", async (req: Request, res: Response) => {
   try {
-    const snapshot = await firestore.collection("tasks").get();
+    const snapshot = await firestore
+      .collection("tasks")
+      .where("userId", "==", req.uid)
+      .get();
     const tasks = snapshot.docs.map((doc) => {
       const task = doc.data() as Task;
       return { ...task, id: doc.id } as Task;

@@ -1,8 +1,6 @@
 "use client";
-
 import { AddOrUpdateTask } from "@/components/addOrUpdateTask";
 import { Tasks } from "@/components/tasks";
-import { axiosInstance } from "@/utils/axiosInstance";
 import { db } from "@/utils/firebase";
 import { useTasksState } from "@/zustand/tasks";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
@@ -21,7 +19,10 @@ export default function TasksHome() {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      query(collection(db, "tasks"), where("userId", "==", user.uid)),
+      query(
+        collection(db, "tasks"),
+        where("userId", "==" /* current user ID */)
+      ),
       (snapshot) => {
         const data = snapshot.docs.map((doc) => ({
           id: doc.id,
