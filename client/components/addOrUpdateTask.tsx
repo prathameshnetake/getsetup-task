@@ -68,7 +68,6 @@ export const AddOrUpdateTask: React.FC<IAddOrUpdateTaskProps> = ({
         detail,
         dueDate: dueDate,
       });
-      reset();
       toast.success("Task updated successfully");
     } catch (error) {
       console.error(error);

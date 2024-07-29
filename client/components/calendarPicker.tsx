@@ -38,7 +38,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ date, setDate }) => {
           mode="single"
           selected={date}
           onSelect={(val) => {
-            if (val) setDate(val.toISOString().split("T")[0]);
+            if (val) setDate(val.toISOString());
           }}
           initialFocus
         />
