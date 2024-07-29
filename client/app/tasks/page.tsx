@@ -15,13 +15,9 @@ export default function TasksHome() {
   const { setTasks } = useTasksState();
   const { user } = useUserState();
 
-  if (!user) {
-    return redirect("/login");
-  }
-
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      query(collection(db, "tasks"), where("userId", "==", user.uid)),
+      query(collection(db, "tasks"), where("userId", "==", user?.uid)),
       (snapshot) => {
         const data = snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -34,6 +30,10 @@ export default function TasksHome() {
 
     return () => unsubscribe();
   }, []);
+
+  if (!user) {
+    return redirect("/login");
+  }
 
   return (
     <div className="p-4 w-full">
