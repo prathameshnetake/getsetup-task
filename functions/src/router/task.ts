@@ -3,7 +3,7 @@ import { Task } from "types/task";
 import * as logger from "firebase-functions/logger";
 import { Firestore } from "@google-cloud/firestore";
 import { taskPayloadSchema } from "../../../types/zodSchemas/task";
-import color from "randomcolor";
+import { generateExtraLightColor } from "../../utils/color";
 
 export const taskRouter = Router();
 const firestore = new Firestore();
@@ -14,7 +14,7 @@ taskRouter.post("/", async (req: Request<Task>, res: Response) => {
 
     // validate zod schema
     taskPayloadSchema.parse(task);
-    const colorCode = color({ luminosity: "light" });
+    const colorCode = generateExtraLightColor();
     logger.info(task);
     await firestore.collection("tasks").add({ ...task, color: colorCode });
     res.json(task);
@@ -43,6 +43,19 @@ taskRouter.delete("/:id", async (req: Request, res: Response) => {
     const id = req.params.id;
     await firestore.collection("tasks").doc(id).delete();
     res.json({ id });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).send(error);
+  }
+});
+
+taskRouter.put("/:id", async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const task = req.body;
+    taskPayloadSchema.parse(task);
+    await firestore.collection("tasks").doc(id).set(task);
+    res.json(task);
   } catch (error) {
     logger.error(error);
     res.status(500).send(error);

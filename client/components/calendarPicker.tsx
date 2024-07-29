@@ -15,7 +15,7 @@ import { CalendarDays } from "lucide-react";
 
 export interface DatePickerProps {
   date: Date | undefined;
-  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  setDate: (value: string) => void;
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({ date, setDate }) => {
@@ -37,7 +37,9 @@ export const DatePicker: React.FC<DatePickerProps> = ({ date, setDate }) => {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={(val) => {
+            if (val) setDate(val.toISOString().split("T")[0]);
+          }}
           initialFocus
         />
       </PopoverContent>

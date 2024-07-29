@@ -6,7 +6,7 @@ export const taskPayloadSchema = z.object({
     .string()
     .min(1, "Description is required")
     .max(1000, "Description is too long"),
-  dueDate: z.string().min(1, "Date is required"),
+  dueDate: z.string().optional(),
   type: z.string().optional(),
   order: z.number().optional(),
 });

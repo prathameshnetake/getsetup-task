@@ -1,12 +1,6 @@
 import * as z from "zod";
-import { taskSchema } from "./zodSchemas/task";
+import { taskSchema, taskPayloadSchema } from "./zodSchemas/task";
 
-export interface TaskPayload {
-  title: string;
-  details: string;
-  date: string;
-  type: string;
-  order: number;
-}
+export type TaskPayload = z.infer<typeof taskPayloadSchema>;
 
 export type Task = z.infer<typeof taskSchema>;

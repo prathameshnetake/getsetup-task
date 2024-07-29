@@ -16,11 +16,11 @@ import {
 import { CalendarPlus2, PencilLine } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { DatePicker } from "./calendarPicker";
-import { useCallback, useEffect } from "react";
-import { useAddTaskState } from "@/zustand/addTask";
+import { useCallback, useState } from "react";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { toast } from "sonner";
 import { Task } from "../../types/task";
+import { setDate } from "date-fns";
 
 export interface IAddOrUpdateTaskProps {
   mode: "add" | "update";
@@ -31,26 +31,26 @@ export const AddOrUpdateTask: React.FC<IAddOrUpdateTaskProps> = ({
   mode,
   task,
 }) => {
-  const {
-    detail,
-    dueDate,
-    order,
-    title,
-    type,
-    setDescription,
-    setDueDate,
-    setOrder,
-    setTitle,
-    setType,
-    reset,
-  } = useAddTaskState();
+  const [title, setTitle] = useState(task?.title || "");
+  const [detail, setDetail] = useState(task?.detail || "");
+  const [dueDate, setDueDate] = useState(task?.dueDate || new Date());
+  const [type, setType] = useState(task?.type || "");
+  const [order, setOrder] = useState(task?.order || 0);
+
+  const reset = () => {
+    setTitle("");
+    setDetail("");
+    setDueDate(new Date());
+    setType("");
+    setOrder(0);
+  };
 
   const addTask = useCallback(async () => {
     try {
       const result = await axiosInstance.post("/task", {
         title,
         detail,
-        dueDate: dueDate.toISOString(),
+        dueDate: dueDate,
       });
       reset();
       toast.success("Task added successfully");
@@ -62,12 +62,12 @@ export const AddOrUpdateTask: React.FC<IAddOrUpdateTaskProps> = ({
 
   const updateTask = useCallback(async () => {
     try {
-      const result = await axiosInstance.put(`/task/${order}`, {
+      const result = await axiosInstance.put(`/task/${task?.id}`, {
+        ...task,
         title,
         detail,
-        dueDate: dueDate.toISOString(),
+        dueDate: dueDate,
       });
-      console.log(result);
       reset();
       toast.success("Task updated successfully");
     } catch (error) {
@@ -124,7 +124,7 @@ export const AddOrUpdateTask: React.FC<IAddOrUpdateTaskProps> = ({
               placeholder="Task details goes here..."
               className="col-span-3 h-[200px]"
               value={detail}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={(e) => setDetail(e.target.value)}
             />
           </div>
           <div className="grid grid-cols-4  gap-4">
@@ -132,8 +132,13 @@ export const AddOrUpdateTask: React.FC<IAddOrUpdateTaskProps> = ({
               Due Date
             </Label>
             <DatePicker
-              date={dueDate}
-              setDate={(value) => setDueDate(new Date())}
+              date={dueDate ? new Date(dueDate) : undefined}
+              setDate={(value) => {
+                console.log(value);
+                if (value) {
+                  setDueDate(value);
+                }
+              }}
             />
           </div>
           <div className="grid grid-cols-4  gap-4">

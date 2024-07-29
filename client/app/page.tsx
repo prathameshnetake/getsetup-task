@@ -3,22 +3,26 @@
 import { AddOrUpdateTask } from "@/components/addOrUpdateTask";
 import { Tasks } from "@/components/tasks";
 import { axiosInstance } from "@/utils/axiosInstance";
+import { db } from "@/utils/firebase";
 import { useTasksState } from "@/zustand/tasks";
+import { collection, onSnapshot } from "firebase/firestore";
 import { useEffect } from "react";
+import { Task } from "../../types/task";
 
 export default function Home() {
   const { setTasks } = useTasksState();
-  const loadTasks = async () => {
-    const response = await axiosInstance.get("/task");
-    setTasks(response.data);
-  };
-  // load all the tasks
+
   useEffect(() => {
-    try {
-      loadTasks().then(() => console.log("Tasks loaded"));
-    } catch (error) {
-      console.log(error);
-    }
+    const unsubscribe = onSnapshot(collection(db, "tasks"), (snapshot) => {
+      const data = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setTasks(data as Task[]);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   return (
