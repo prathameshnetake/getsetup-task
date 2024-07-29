@@ -35,7 +35,6 @@
     "eslint-plugin-import": "^2.25.4",
     "firebase-functions-test": "^3.1.0",
     "ts-loader": "^9.5.1",
-    "types": "workspace:*",
     "typescript": "^4.9.0",
     "webpack": "^5.93.0",
     "webpack-cli": "^5.1.4",

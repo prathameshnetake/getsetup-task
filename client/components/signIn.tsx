@@ -17,6 +17,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/utils/firebase";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const FormSchema = z.object({
   email: z
@@ -31,6 +33,8 @@ const FormSchema = z.object({
 });
 
 export function SignIn() {
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -39,23 +43,24 @@ export function SignIn() {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    setLoading(true);
     try {
       const user = await signInWithEmailAndPassword(
         auth,
         data.email,
         data.password
       );
-    } catch (error) {}
+      setLoading(false);
+    } catch (error) {
+      toast.error;
+      setLoading(false);
+    }
   }
 
   return (
-    <div className="w-[50%]">
+    <div className="w-full">
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-2/3 space-y-4"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
             name="email"
@@ -82,7 +87,9 @@ export function SignIn() {
               </FormItem>
             )}
           />
-          <Button type="submit">Login</Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? "Logging you in" : "Login"}
+          </Button>
         </form>
       </Form>
     </div>

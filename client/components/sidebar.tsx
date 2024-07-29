@@ -40,7 +40,7 @@ export const Sidebar: React.FC<{}> = () => {
   }, []);
 
   return (
-    <nav className="m-4 p-8 bg-slate-50 w-[300px] rounded-lg h-full flex flex-col">
+    <nav className="m-4 p-8 bg-slate-50 w-[300px] rounded-lg h-full  flex-col hidden sm:block sticky top-0">
       <div>
         <p className="font-bold text-xl">Menu</p>
       </div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Sidebar } from "@/components/sidebar";
 import { useUserState } from "@/zustand/user";
 import { redirect } from "next/navigation";
+import { MobileMenu } from "@/components/mobileMenu";
 
 export const metadata: Metadata = {
   title: "GetSetup",
@@ -14,8 +15,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex w-full">
+    <div className="grid w-full sm:grid-cols-2">
       <Sidebar />
+      <MobileMenu />
       {children}
     </div>
   );
