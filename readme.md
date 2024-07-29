@@ -12,5 +12,5 @@ Go to client and run `pnpm run dev`
 
 ## Backend
 
-Backend is express app running in cloud functions
+Backend is express app running in cloud functions and is using firestore as a database
 to emulate firebase functions you need to install firebase tools and run `pnpm run serve`
