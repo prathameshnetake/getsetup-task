@@ -1,38 +1,17 @@
 "use client";
+import { useUserState } from "@/zustand/user";
+import { redirect } from "next/navigation";
 
-import { AddOrUpdateTask } from "@/components/addOrUpdateTask";
-import { Tasks } from "@/components/tasks";
-import { axiosInstance } from "@/utils/axiosInstance";
-import { db } from "@/utils/firebase";
-import { useTasksState } from "@/zustand/tasks";
-import { collection, onSnapshot } from "firebase/firestore";
-import { useEffect } from "react";
-import { Task } from "../../types/task";
+export default function TasksHome() {
+  const { authLoading, user } = useUserState();
 
-export default function Home() {
-  const { setTasks } = useTasksState();
+  if (authLoading) {
+    return <p>Loading...</p>;
+  }
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "tasks"), (snapshot) => {
-      const data = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+  if (!user && !authLoading) {
+    return redirect("/login");
+  }
 
-      setTasks(data as Task[]);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  return (
-    <div className="p-4 w-full">
-      <div className="mt-2 flex justify-between w-full">
-        <p className="text-3xl font-bold">Task Wall</p>
-        <AddOrUpdateTask mode="add" />
-      </div>
-
-      <Tasks />
-    </div>
-  );
+  return redirect("/tasks");
 }

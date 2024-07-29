@@ -1,6 +1,12 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
 import { SidePanelItem, SidePanelItemProps } from "./sidePanelItem";
 import { ChevronsRight, BookCheck } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useCallback } from "react";
+import { signOut } from "firebase/auth";
+import { auth } from "@/utils/firebase";
 
 export const Sidebar: React.FC<{}> = () => {
   const taskTypes: SidePanelItemProps[] = [
@@ -29,6 +35,10 @@ export const Sidebar: React.FC<{}> = () => {
     },
   ];
 
+  const logout = useCallback(async () => {
+    await signOut(auth);
+  }, []);
+
   return (
     <nav className="m-4 p-8 bg-slate-50 w-[300px] rounded-lg h-full flex flex-col">
       <div>
@@ -48,6 +58,14 @@ export const Sidebar: React.FC<{}> = () => {
         {lists.map((item) => (
           <SidePanelItem {...item} />
         ))}
+      </div>
+      <div>
+        <Button
+          className="bg-yellow-400 w-full mt-6 text-black font-bold hover:bg-yellow-500"
+          onClick={logout}
+        >
+          Sign Out
+        </Button>
       </div>
     </nav>
   );
