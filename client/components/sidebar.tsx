@@ -9,19 +9,35 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/utils/firebase";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserState } from "@/zustand/user";
+import { useTasksState } from "@/zustand/tasks";
+import { isSameDay } from "date-fns";
 
 export const Sidebar: React.FC<{}> = () => {
   const { user } = useUserState();
+  const { tasks } = useTasksState();
+
   const taskTypes: SidePanelItemProps[] = [
     {
       text: "Upcoming",
       Icon: <ChevronsRight />,
-      count: 1,
+      count: tasks.reduce<any>((prev, next) => {
+        if (new Date(next.dueDate!) > new Date()) {
+          return prev + 1;
+        }
+
+        return prev;
+      }, 0),
     },
     {
       text: "Today",
       Icon: <BookCheck />,
-      count: 2,
+      count: tasks.reduce<any>((prev, next) => {
+        if (isSameDay(new Date(next.dueDate!), new Date())) {
+          return prev + 1;
+        }
+
+        return prev;
+      }, 0),
     },
   ];
 
