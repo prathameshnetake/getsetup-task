@@ -7,8 +7,11 @@ import { Button } from "@/components/ui/button";
 import { useCallback } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "@/utils/firebase";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useUserState } from "@/zustand/user";
 
 export const Sidebar: React.FC<{}> = () => {
+  const { user } = useUserState();
   const taskTypes: SidePanelItemProps[] = [
     {
       text: "Upcoming",
@@ -41,7 +44,13 @@ export const Sidebar: React.FC<{}> = () => {
 
   return (
     <nav className="m-4 p-8 bg-slate-50 w-[300px] rounded-lg h-full  flex-col hidden sm:block sticky top-0">
-      <div>
+      <div className="flex items-center">
+        <Avatar className="mr-3">
+          <AvatarImage src={user?.photoURL || ""} alt="avatar image" />
+          <AvatarFallback>
+            {user?.displayName?.split("")[0] || user?.email?.split("")[0]}
+          </AvatarFallback>
+        </Avatar>
         <p className="font-bold text-xl">Menu</p>
       </div>
       <div className="mt-2 bg-transparent">
