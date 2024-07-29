@@ -36,12 +36,11 @@ export default function TasksHome() {
   }
 
   return (
-    <div className="p-4 w-full">
-      <div className="mt-2 flex justify-between w-full sticky top-0">
+    <div className="p-4 w-full col-span-2">
+      <div className="mt-2 flex justify-between w-full sticky top-[70px] sm:top-4">
         <p className="text-3xl font-bold">Task Wall</p>
         <AddOrUpdateTask mode="add" />
       </div>
-
       <Tasks />
     </div>
   );

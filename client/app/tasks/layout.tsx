@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="grid w-full sm:grid-cols-2">
+    <div className="grid w-full sm:grid-cols-3">
       <Sidebar />
       <MobileMenu />
       {children}
