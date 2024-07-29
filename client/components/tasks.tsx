@@ -38,34 +38,32 @@ export const Tasks: React.FC = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="grid my-8 items-center justify-center col-span-2">
-        <Droppable droppableId="droppable">
-          {(provided, snapshot) => (
-            <div
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              className="w-full"
-            >
-              <div className="col-span-4 grid gap-4 sm:col-span-3 w-full">
-                {tasks.map((task, index) => (
-                  <Draggable key={task.id} draggableId={task.id} index={index}>
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className="w-full"
-                      >
-                        <SingleTask key={task.id} {...task} />
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-              </div>
+      <Droppable droppableId="droppable">
+        {(provided, snapshot) => (
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            className="grid my-8 items-center justify-center col-span-2 w-full"
+          >
+            <div className="grid gap-4">
+              {tasks.map((task, index) => (
+                <Draggable key={task.id} draggableId={task.id} index={index}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      className=""
+                    >
+                      <SingleTask key={task.id} {...task} />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
             </div>
-          )}
-        </Droppable>
-      </div>
+          </div>
+        )}
+      </Droppable>
     </DragDropContext>
   );
 };

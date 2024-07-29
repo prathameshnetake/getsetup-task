@@ -64,7 +64,8 @@ export const Sidebar: React.FC<{}> = () => {
         <Avatar className="mr-3">
           <AvatarImage src={user?.photoURL || ""} alt="avatar image" />
           <AvatarFallback>
-            {user?.displayName?.split("")[0] || user?.email?.split("")[0]}
+            {user?.displayName?.split("")[0].toUpperCase() ||
+              user?.email?.split("")[0].toUpperCase()}
           </AvatarFallback>
         </Avatar>
         <p className="font-bold text-xl">Menu</p>

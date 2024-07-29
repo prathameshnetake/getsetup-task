@@ -22,7 +22,7 @@ export const MobileMenu = () => {
   }, []);
 
   return (
-    <div className="sm:hidden p-4 mb-4 sticky top-0">
+    <div className="sm:hidden p-4 mb-4 sticky top-0 z-10 h-[50px]">
       <Drawer>
         <DrawerTrigger asChild>
           <Button>

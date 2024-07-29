@@ -58,7 +58,7 @@ export const SingleTask: React.FC<Task> = (props) => {
 
   return (
     <div
-      className="grid w-full rounded-lg shadow-md p-8"
+      className="grid rounded-lg shadow-md p-8 min-w-[350px]"
       style={{ backgroundColor: color }}
     >
       <div className="flex justify-between">
